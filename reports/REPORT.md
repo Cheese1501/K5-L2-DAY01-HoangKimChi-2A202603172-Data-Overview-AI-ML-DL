@@ -53,7 +53,7 @@ Số lượng prediction theo ngưỡng: xem output ô so sánh `0.20` / `0.35` 
 Hạ ngưỡng từ 0.60 xuống 0.20 giữ lại nhiều prediction hơn; tăng ngưỡng sẽ loại bỏ các prediction có score thấp hơn ngưỡng.
 4. Khi hạ ngưỡng, reviewer phải kiểm tra thêm các hộp có khả năng sai, trùng lặp, gán nhầm lớp, hoặc chỉ bao một phần vật thể. Reviewer cũng cần rà soát vật thể bị bỏ sót; không được mặc định rằng mọi hộp model tạo ra đều đúng.
 5. Quy tắc box đề xuất: Vẽ một hộp chữ nhật nhỏ nhất có thể bao trọn phần vật thể nhìn thấy, không cố ý lấy thêm nền; nếu vật thể bị cắt ở mép ảnh thì hộp dừng tại mép ảnh, và áp dụng nhất quán cho mọi ảnh theo guideline.
-6. Trên ảnh `kitchen`, máy/ kệ bị `person` che lấp. Nếu guideline đã quy định rõ cách xử lý vật thể bị che/cắt mép thì làm theo guideline. Nếu không rõ có nên gán nhãn, phần nào được tính là vật thể, hoặc hai vật chồng lấn ra sao, cần escalation lên Lab Coach thay vì tự đặt quy tắc.
+6. Ở mép trái ảnh kitchen, chỉ nhìn thấy một phần bàn tay/cánh tay, còn phần lớn cơ thể nằm ngoài khung hình. Model dự đoán person với score khoảng 0.61. Nếu guideline chưa quy định cách gán nhãn người bị cắt mép, tôi sẽ hỏi Lab Coach (escalation) để thống nhất có gán nhãn hay không và cách vẽ box, tránh tự suy đoán phần cơ thể ngoài ảnh.
 
 ## 3. Phân đoạn theo từng đối tượng
 
@@ -64,7 +64,7 @@ Chỉ dùng ảnh `sample_id = kitchen`. Chọn **một** record.
 2. Bounding box chỉ cho biết hình chữ nhật bao quanh vật thể. Polygon cung cấp các điểm tọa độ bám theo đường biên, nên mô tả hình dạng và phạm vi vật thể sát hơn, đặc biệt khi vật thể không có hình chữ nhật hoặc có đường viền không đều.
 3. instance_id phân biệt từng đối tượng riêng trong output của bài lab, ví dụ kitchen-001. Nó không phải class_id vì nhiều instance có thể cùng một lớp; cũng không phải tracking ID vì bài lab xử lý ảnh tĩnh, không theo dõi cùng một đối tượng qua nhiều khung hình/video.
 4. Quy tắc mask đề xuất: Vẽ polygon theo đường biên của phần vật thể nhìn thấy, dùng đủ điểm để theo sát hình dạng nhưng không thêm nền; không tự suy diễn phần bị che khuất. Áp dụng cùng tiêu chí cho các ảnh và chuyển trường hợp biên không rõ sang reviewer/escalation.
-5. Trường hợp khó trên ảnh kitchen: 
+5. Ở chiếc bát có nhãn bowl 0.74 phía trước bàn, mép dưới của bát tiếp giáp với mặt bàn. Đây là vị trí cần phân biệt rõ vùng thuộc chiếc bát và vùng thuộc mặt bàn để tránh mask lấy thừa nền. Nếu guideline đã quy định vẽ theo biên nhìn thấy, tôi áp dụng quy tắc đó. Nếu một đoạn biên không đủ rõ và guideline chưa hướng dẫn cách xử lý, tôi sẽ hỏi Lab Coach (escalation) để thống nhất.
 
 ## 4. Vòng đời và kiểm tra chất lượng
 
